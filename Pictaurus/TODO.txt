@@ -1,0 +1,61 @@
+﻿[x] Unpause after waiting more than 2 minutes
+[ ] Pictaurus: Show picture date
+[ ] Pictaurus: Option to show text
+[ ] Right-Click
+	[ ] Copy picture
+	[ ] Copy path
+	[ ] Post to facebook
+[ ] Be able to quickly edit title and add annotations
+[ ] Tag people in the picture
+[ ] Apply some kind of mark that says this picture has been annotated 
+	– be able to exclude these pics from random viewing or have an arrow that takes you to the next non-annotated picture
+
+
+
+var fbApp = new FacebookApp();
+    var auth = new CanvasAuthorizer(fbApp);
+
+    if (auth.IsAuthorized())
+    {
+
+        //Create a new dictionary of objects, with string keys
+        Dictionary<string, object> parameters = new Dictionary<string, object>();
+
+        string strDescription = txtDescription.Text;
+
+        //Add elements to the dictionary
+        if (string.IsNullOrEmpty(ImagePath) == false)
+        {
+            //There is an Image to add to the parameters                
+            FacebookMediaObject media = new FacebookMediaObject
+            {
+                FileName = ImageName,
+                ContentType = "image/jpeg"
+            };
+
+            byte[] img = File.ReadAllBytes(ImagePath);
+            media.SetValue(img);
+
+            parameters.Add("source", media);
+            parameters.Add("message", strDescription);
+
+            try
+            {
+                dynamic result = fbApp.Api("/me/photos", parameters, HttpMethod.Post);
+
+            }
+            catch (Exception ex)
+            {
+                //handle error....
+                string strErr = ex.Message.ToString();
+                lblValidationMsg.Text = strErr;
+            }
+        }            
+
+    }
+
+DONE
+[x] Startup doesn't immediately display recent pictures
+[x] Escape does not work
+[x] Pictaurus: Pause automatic advance
+[x] Remember recently viewed photos
