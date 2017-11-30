@@ -33,7 +33,7 @@ namespace Pictaurus
 
         bool IsPreviewMode = false;
         ConsolidatedViewer _masterViewer;
-        Font errorFont = new Font("Courier New", 14, FontStyle.Bold);
+        Font errorFont = new Font("Courier New", 24, FontStyle.Bold);
 
         public Panel DisplayPanel { get { return displayPanel; } }
 
@@ -150,7 +150,6 @@ namespace Pictaurus
             int wParam = (int)msg.WParam;
             if(msg.Msg == WM_KEYDOWN)
             {
-                //Debug.WriteLine("DOWN: " + ((Keys)wParam)); 
                 _keyDownState[wParam] = true;
                 _masterViewer.HandleKeyCommand((Keys)wParam,
                     _keyDownState[(int)Keys.LShiftKey] | _keyDownState[(int)Keys.RShiftKey] | _keyDownState[(int)Keys.Shift] | _keyDownState[(int)Keys.ShiftKey],
@@ -161,20 +160,12 @@ namespace Pictaurus
             }
             else if(msg.Msg == WM_KEYUP)
             {
-                //Debug.WriteLine("UP:   " + ((Keys)wParam));
                 _keyDownState[wParam] = false;     
                 return true;
             }
             else if (msg.Msg == WM_TIMER)
             {
-                //Debug.WriteLine("TIMER:  " + msg.Msg + "," + msg.LParam + "," + msg.WParam + "," + msg.Result);
             }
-        //}
-        //    {
-                
-        //        Debug.WriteLine("PRE:  " + msg.Msg + "," + msg.LParam + "," + msg.WParam + "," + msg.Result);
-        //        return true;
-        //    }
             return false;
         }
 
@@ -217,7 +208,8 @@ namespace Pictaurus
                         _currentBitmap = new Bitmap(1700, 800);
                         Graphics g = Graphics.FromImage(_currentBitmap);
                         g.Clear(Color.Red);
-                        g.DrawString(e.ToString(), errorFont, Brushes.Yellow, 10, 10, StringFormat.GenericTypographic);
+                        var message = $"{e.ToString()}\r\nOn image: {bitmapPath}";
+                        g.DrawString(message, errorFont, Brushes.Yellow, 10, 10, StringFormat.GenericTypographic);
                     }
                     catch (Exception) { }
                 }
