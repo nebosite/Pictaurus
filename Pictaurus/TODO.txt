@@ -1,4 +1,13 @@
 ﻿[x] Unpause after waiting more than 2 minutes
+
+[ ] Refactor picture model:
+	[ ] Always factor all pictures into a long array with no repeats
+		[ ] coallate all pictures into a master array
+		[ ] Get the recent pictures list and start filling working array if picture is available, removing from master array as we go
+		[ ] Randomly place the remaining pictures
+	[ ] Up and down moves in the folder as before, but does not "remember" in the long array.
+	[ ] Saving only remembers last 50 pictures or so
+[ ] When settings change, clear out recent pictures list
 [ ] Pictaurus: Show picture date
 [ ] Pictaurus: Option to show text
 [ ] Right-Click
