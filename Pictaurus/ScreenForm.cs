@@ -198,6 +198,33 @@ namespace Pictaurus
                 if (_currentBitmap != null) _currentBitmap.Dispose();
                 _currentBitmap = null;
                 _currentBitmap = new Bitmap(bitmapPath);
+                var rawOrientation = _currentBitmap.GetPropertyItem(0x112);
+                int orientation = BitConverter.ToUInt16(rawOrientation.Value, 0);
+                var rot = RotateFlipType.RotateNoneFlipNone;
+
+                switch(orientation)
+                {
+                    case 3:
+                    case 4: rot = RotateFlipType.Rotate180FlipNone; break;
+                    case 5:
+                    case 6: rot = RotateFlipType.Rotate90FlipNone; break;
+                    case 7:
+                    case 8: rot = RotateFlipType.Rotate270FlipNone; break;
+
+                }
+
+                switch(orientation)
+                {
+                    case 2:
+                    case 4:
+                    case 6:
+                    case 8: rot |= RotateFlipType.RotateNoneFlipX; break;
+                }
+
+                if (rot != RotateFlipType.RotateNoneFlipNone)
+                {
+                    _currentBitmap.RotateFlip(rot);
+                }
             }
             catch (Exception e)
             {
