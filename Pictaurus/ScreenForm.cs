@@ -200,30 +200,22 @@ namespace Pictaurus
                 _currentBitmap = new Bitmap(bitmapPath);
                 var rawOrientation = _currentBitmap.GetPropertyItem(0x112);
                 int orientation = BitConverter.ToUInt16(rawOrientation.Value, 0);
-                var rot = RotateFlipType.RotateNoneFlipNone;
+                var transformation = RotateFlipType.RotateNoneFlipNone;
 
-                switch(orientation)
+                switch (orientation)
                 {
-                    case 3:
-                    case 4: rot = RotateFlipType.Rotate180FlipNone; break;
-                    case 5:
-                    case 6: rot = RotateFlipType.Rotate90FlipNone; break;
-                    case 7:
-                    case 8: rot = RotateFlipType.Rotate270FlipNone; break;
-
+                    case 2: transformation = RotateFlipType.RotateNoneFlipX; break;
+                    case 3: transformation = RotateFlipType.Rotate180FlipNone; break;
+                    case 4: transformation = RotateFlipType.Rotate180FlipX; break;
+                    case 5: transformation = RotateFlipType.Rotate90FlipX; break;
+                    case 6: transformation = RotateFlipType.Rotate90FlipNone; break;
+                    case 7: transformation = RotateFlipType.Rotate270FlipX; break;
+                    case 8: transformation = RotateFlipType.Rotate270FlipNone; break;
                 }
 
-                switch(orientation)
+                if (transformation != RotateFlipType.RotateNoneFlipNone)
                 {
-                    case 2:
-                    case 4:
-                    case 6:
-                    case 8: rot |= RotateFlipType.RotateNoneFlipX; break;
-                }
-
-                if (rot != RotateFlipType.RotateNoneFlipNone)
-                {
-                    _currentBitmap.RotateFlip(rot);
+                    _currentBitmap.RotateFlip(transformation);
                 }
             }
             catch (Exception e)
@@ -242,6 +234,7 @@ namespace Pictaurus
                 }
             }
         }
+
 
         private void displayPanel_Layout(object sender, LayoutEventArgs e)
         {
