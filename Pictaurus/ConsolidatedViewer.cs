@@ -100,8 +100,11 @@ namespace Pictaurus
                     labelText += parts[index];
                 }
 
-                g.DrawString(labelText, pictureFont, Brushes.Black, 1, 1);
-                g.DrawString(labelText, pictureFont, Brushes.White, 0, 0);
+                if(_paused)
+                {
+                    g.DrawString(labelText, pictureFont, Brushes.Black, 1, 1);
+                    g.DrawString(labelText, pictureFont, Brushes.White, 0, 0);
+                }
             }
             catch (System.Exception err)
             {
@@ -128,6 +131,9 @@ namespace Pictaurus
                     _resumeSeconds = key == Keys.P ? 7200 : 120; // hard pause is 2 hours, soft pause is 2 minutes
                     if (!_paused) Pause(); 
                     else Resume();
+                    break;
+                case Keys.C:
+                    Clipboard.SetImage(forms[_currentForm].GetCurrentBitmap());
                     break;
                 case Keys.Escape:
                     SaveState();

@@ -35,6 +35,8 @@ namespace Pictaurus
         ConsolidatedViewer _masterViewer;
         Font errorFont = new Font("Courier New", 24, FontStyle.Bold);
 
+        public bool IsPaused => buttonResume.Visible;
+
         public Panel DisplayPanel { get { return displayPanel; } }
 
         public ScreenForm(Rectangle bounds, ConsolidatedViewer masterViewer)
@@ -182,7 +184,11 @@ namespace Pictaurus
 
         internal void Pause()
         {
-            buttonResume.Visible = true;
+            if(!buttonResume.Visible)
+            {
+                buttonResume.Visible = true;
+                this.Invalidate();
+            }
         }
 
         internal Bitmap GetCurrentBitmap()
