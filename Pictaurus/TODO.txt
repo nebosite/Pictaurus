@@ -1,5 +1,6 @@
 ﻿[x] Unpause after waiting more than 2 minutes
 
+[ ] Bug: After moving the pictures folder, pictaurus still tries to load old pictures from a defunct location
 [ ] Refactor picture model:
 	[ ] Always factor all pictures into a long array with no repeats
 		[ ] coallate all pictures into a master array
