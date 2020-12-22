@@ -35,7 +35,7 @@ namespace Pictaurus
                string firstArg = args[0].ToLower();
                if(firstArg.StartsWith("/c")) action = Action.Configure;
                if(firstArg.StartsWith("/p")) action = Action.Preview; 
-               if(firstArg.StartsWith("/debug")) action = Action.Debug; 
+               if(firstArg.StartsWith("/d")) action = Action.Debug; 
             }
             
             //MessageBox.Show("Action was" + action + Environment.NewLine + string.Join(",", args));

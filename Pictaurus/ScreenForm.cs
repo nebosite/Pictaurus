@@ -204,24 +204,35 @@ namespace Pictaurus
                 if (_currentBitmap != null) _currentBitmap.Dispose();
                 _currentBitmap = null;
                 _currentBitmap = new Bitmap(bitmapPath);
-                var rawOrientation = _currentBitmap.GetPropertyItem(0x112);
-                int orientation = BitConverter.ToUInt16(rawOrientation.Value, 0);
-                var transformation = RotateFlipType.RotateNoneFlipNone;
+                try
+                {           
+                    var transformation = RotateFlipType.RotateNoneFlipNone;
+                    if(_currentBitmap.PropertyIdList.Contains(0x112))
+                    {
+                        var rawOrientation = _currentBitmap.GetPropertyItem(0x112);
+                        int orientation = BitConverter.ToUInt16(rawOrientation.Value, 0);
+                        switch (orientation)
+                        {
+                            case 2: transformation = RotateFlipType.RotateNoneFlipX; break;
+                            case 3: transformation = RotateFlipType.Rotate180FlipNone; break;
+                            case 4: transformation = RotateFlipType.Rotate180FlipX; break;
+                            case 5: transformation = RotateFlipType.Rotate90FlipX; break;
+                            case 6: transformation = RotateFlipType.Rotate90FlipNone; break;
+                            case 7: transformation = RotateFlipType.Rotate270FlipX; break;
+                            case 8: transformation = RotateFlipType.Rotate270FlipNone; break;
+                        }
 
-                switch (orientation)
-                {
-                    case 2: transformation = RotateFlipType.RotateNoneFlipX; break;
-                    case 3: transformation = RotateFlipType.Rotate180FlipNone; break;
-                    case 4: transformation = RotateFlipType.Rotate180FlipX; break;
-                    case 5: transformation = RotateFlipType.Rotate90FlipX; break;
-                    case 6: transformation = RotateFlipType.Rotate90FlipNone; break;
-                    case 7: transformation = RotateFlipType.Rotate270FlipX; break;
-                    case 8: transformation = RotateFlipType.Rotate270FlipNone; break;
+                    }
+
+
+                    if (transformation != RotateFlipType.RotateNoneFlipNone)
+                    {
+                        _currentBitmap.RotateFlip(transformation);
+                    }
                 }
-
-                if (transformation != RotateFlipType.RotateNoneFlipNone)
+                catch(Exception transformationError)
                 {
-                    _currentBitmap.RotateFlip(transformation);
+                    Debug.WriteLine($"Can't transform {bitmapPath}");   
                 }
             }
             catch (Exception e)
