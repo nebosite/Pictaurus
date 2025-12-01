@@ -34,7 +34,6 @@ namespace Pictaurus
             nextUpdate = DateTime.Now.AddSeconds(_secondsBetweenChange);
         }
 
-        DateTime lastTurn = DateTime.MinValue;
         void NewPictureTimerTick(object sender, EventArgs e)
         {
             if (initFrames > 0)
@@ -46,11 +45,11 @@ namespace Pictaurus
             if (!_paused && DateTime.Now > nextUpdate)
             {
                 PanelAction(() => viewModel.GoForward(1), false);
-                lastTurn = DateTime.Now;
             }
-            else
+
+            if (_paused)
             {
-                if ((DateTime.Now - lastTurn).TotalSeconds > _resumeSeconds) Resume();
+                if ((DateTime.Now - viewModel.lastTurn).TotalSeconds > _resumeSeconds) Resume();
             }
         }
 
@@ -128,7 +127,7 @@ namespace Pictaurus
                 case Keys.Down: PanelAction(() => viewModel.GoDown(stepSize), true); break;
                 case Keys.P:
                 case Keys.Space:
-                    _resumeSeconds = key == Keys.P ? 7200 : 120; // hard pause is 2 hours, soft pause is 2 minutes
+                    _resumeSeconds = 10;// key == Keys.P ? 7200 : 120; // hard pause is 2 hours, soft pause is 2 minutes
                     if (!_paused) Pause(); 
                     else Resume();
                     break;
@@ -151,9 +150,13 @@ namespace Pictaurus
             }
             catch(Exception e)
             {
-                // Ignor exceptions here
+                // Ignore exceptions here
             }
-            if(pause) Pause();
+            if (pause)
+            {
+                Pause();
+                _resumeSeconds = 8;
+            }
             GoNextPanel();
         }
 
@@ -174,7 +177,7 @@ namespace Pictaurus
         {
             if (pictureFont == null)
             {
-                pictureFont = new Font("Arial", 8f);
+                pictureFont = new Font("Arial", 14f);
             }
             this.forms.Add(screenForm);
             formLookup.Add(screenForm.DisplayPanel, screenForm);

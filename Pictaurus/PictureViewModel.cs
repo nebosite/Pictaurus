@@ -17,6 +17,7 @@ namespace Pictaurus
         List<Picture> _recentPictures = new List<Picture>();
         int _picturePointer = 0;
 
+        public DateTime lastTurn = DateTime.MinValue;
         public PictureViewModel()
         {
             string[] recentNames = (string[])Application.UserAppDataRegistry.GetValue(RECENTPICTURES_REGNAME);
@@ -52,7 +53,8 @@ namespace Pictaurus
 
         internal void GoBack(int steps)
         {
-            _picturePointer-= steps;
+            lastTurn = DateTime.Now;
+            _picturePointer -= steps;
 
             if (_picturePointer < 0) _picturePointer = 0;
             if(_recentPictures.Count > 0)  CurrentPicture = _recentPictures[_picturePointer];
@@ -61,6 +63,7 @@ namespace Pictaurus
 
         internal void GoForward(int steps)
         {
+            lastTurn = DateTime.Now;
             _picturePointer += steps;
 
             if (_picturePointer >= _recentPictures.Count)
@@ -77,6 +80,7 @@ namespace Pictaurus
 
         internal void GoUp(int stepSize)
         {
+            lastTurn = DateTime.Now;
             PictureFolder parent = _recentPictures[_picturePointer].Parent;
             CurrentPicture = parent.GetPrev(_recentPictures[_picturePointer], stepSize);
             _recentPictures[_picturePointer] = CurrentPicture;
@@ -84,6 +88,7 @@ namespace Pictaurus
 
         internal void GoDown(int stepSize)
         {
+            lastTurn = DateTime.Now;
             PictureFolder parent = _recentPictures[_picturePointer].Parent;
             CurrentPicture = parent.GetNext(_recentPictures[_picturePointer], stepSize);
             _recentPictures[_picturePointer] = CurrentPicture;
