@@ -127,7 +127,7 @@ namespace Pictaurus
                 case Keys.Down: PanelAction(() => viewModel.GoDown(stepSize), true); break;
                 case Keys.P:
                 case Keys.Space:
-                    _resumeSeconds = 10;// key == Keys.P ? 7200 : 120; // hard pause is 2 hours, soft pause is 2 minutes
+                    _resumeSeconds = key == Keys.P ? 7200 : 120; // hard pause is 2 hours, soft pause is 2 minutes
                     if (!_paused) Pause(); 
                     else Resume();
                     break;
